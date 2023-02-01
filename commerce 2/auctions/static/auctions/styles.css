@@ -1,0 +1,53 @@
+body {
+    padding: 0px;
+}
+
+#listing_actions {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0px 10px 10px;
+    margin: 0px;
+}
+
+#listing_actions > form {
+    padding: 10px;
+}
+
+#commentBox {
+    width: 600px;
+    border-radius: 5px;
+    border-color: grey;
+}
+
+.navBar {
+    background-color: #0B5345;
+    color: white;
+    height: 150px;
+}
+
+.buttonStyle {
+    color: white;
+    background-color: cornflowerblue;
+    border: none;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.container {
+    padding: 10px 0px 10px 20px;
+    margin: 0px;
+}
+
+.listingContainer {
+    padding: 10px 0px 10px 20px;
+    margin:10px 10px 20px 10px;
+    border:solid 1px grey;
+    border-radius: 4px;
+    display: flex;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

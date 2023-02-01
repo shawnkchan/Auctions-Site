@@ -1,0 +1,85 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="center">
+        <div>
+            {% include 'auctions/messages.html' %}
+            {% if listing.status == 1 %}
+            <h2 class="container">{{ listing.name }}</h2>
+            {% else %}
+            <h2 class="container">{{ listing.name }}</h2>
+            <h4 class="container" style="background-color: rgb(215, 72, 72); color: white;">This item has been de-listed</h4>
+                {% if user.id == listing.latestBidder.id %}
+                <div class="container" style="color: #1d7235;">
+                    <h4>You have won the listing</h4>
+                </div>
+                {% endif %}
+            {% endif %}
+            {% if listing.imageUrl %}
+                <div class="center">
+                    <img id='image' style="width: 500px; padding: 10px;" src='{{ listing.imageUrl }}' alt="{{ listing.name }} picture">
+                </div>
+            {% else %}
+            <div class="center">
+                <img id='image' style="width: 500px; padding: 10px" src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png' alt=" No picture">
+            </div>
+            {% endif %}
+            <h3 class="container">Latest Bid: ${{ listing.startBid }}</h3>
+            <div class="container">
+                <h4>Description</h4>
+                <p style="color: lightslategrey;">Created on {{ listing.date }} by {{listing.seller}}</p>
+                <p>{{ listing.description }}</p>
+            </div>
+        
+        
+            {% if user.is_authenticated %}
+                {% if listing.status == 1 %}
+                <div id='listing_actions'>
+                    <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name='bidder' value='{{ user.username }}'>
+                        <input type="text" name="bid">
+                        <input class='buttonStyle' type="submit" value="Place Bid">
+                    </form>
+
+                    <form action="{% url 'listing' listing.id %}" method ='post'>
+                        {% csrf_token %}
+                        <input type="hidden" name='item' value="{{ listing.id }}">
+                        <input type="hidden" name='user' value='{{ user.username }}'>
+                        <input class='buttonStyle' type="submit" name='watchlist' value="Add to Watchlist">
+                    </form>
+
+                        {% if listing.seller.id == user.id %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="0">
+                                <input class='buttonStyle' type="submit" value="Close this listing">
+                            </form>
+                        {% endif %}
+                </div>
+                <hr>
+                <div class='container'>
+                    <h4>Comments</h4>
+                    {% for comment in comments %}
+                    <div class='comments'>
+                        <strong>{{comment.username}}</strong>
+                        <p>{{comment.comment}}</p>
+                    </div>
+                    {% endfor %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="commenter" value="{{ user.username }}">
+                        <textarea id='commentBox' type="text" name="comment" placeholder="Comment on this post..."></textarea>
+                        <br>
+                        <input style="position: relative; left: 485px;" class='buttonStyle' type="submit" name="postComment" value="Post Comment">
+                    </form>
+                </div>
+                {% endif %}
+            {% else %}
+            <div class="container">
+                <a href="{% url 'login' %}">Log in</a> to bid on this listing!
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

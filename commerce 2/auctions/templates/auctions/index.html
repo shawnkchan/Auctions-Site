@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin: 10px;">Active Listings</h2>
+
+    
+    {% for listing in listings %}
+        {% if listing.status == 1%}
+        <div class='listingContainer'>
+            <div>
+                {% if listing.imageUrl %}
+                <img style="width: 400px; " src='{{ listing.imageUrl }}' alt="{{ listing.name }} picture">
+                {% else %}
+                <img style="width: 400px;" src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png' alt=" No picture">
+                {% endif %}
+            </div>
+            <div style="padding: 10px 0px 10px 40px;">
+                <h2><a href="{% url 'listing' listing.id %}">{{ listing.name }}</a></h2>
+                <h3>Latest Bid: ${{ listing.startBid }}</h3>
+                <p>{{ listing.description }}</p>
+                <i>Created on {{ listing.date }} by {{ listing.seller }}</i>
+            </div>
+            
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
